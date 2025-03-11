@@ -1,16 +1,27 @@
-import javax.swing.JFrame;
-import javax.swing.WindowConstants;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.SwingConstants;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.WindowConstants;
+
 public class FrmEstadistica extends JFrame{
 
+    private JTextField txtDato;
+    private JList lstMuestra;
+
     // Metodo Constructor
+    /**
+     * 
+     */
     public FrmEstadistica() {
         setSize(500, 300);
         setTitle("Estadistica");
@@ -21,7 +32,7 @@ public class FrmEstadistica extends JFrame{
         lblDato.setBounds(10, 10, 100, 25);
         getContentPane().add(lblDato);
 
-        JTextField txtDato = new JTextField();
+        txtDato = new JTextField();
         txtDato.setBounds(110, 10, 100, 25);
         getContentPane().add(txtDato);
 
@@ -38,7 +49,7 @@ public class FrmEstadistica extends JFrame{
         lblMuestra.setHorizontalAlignment(SwingConstants.CENTER);
         getContentPane().add(lblMuestra);
 
-        JList lstMuestra = new JList();
+        lstMuestra = new JList();
         JScrollPane spMuestra = new JScrollPane(lstMuestra);
         spMuestra.setBounds(220, 40, 100, 150);
         getContentPane().add(spMuestra);
@@ -59,5 +70,64 @@ public class FrmEstadistica extends JFrame{
         txtEstadistica.setEnabled(false);
         getContentPane().add(txtEstadistica);
 
+        //Crear Eventos
+        btnAgregar.addActionListener(new ActionListener(){
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                agregarDato();
+            }
+        });
+
+        btnQuitar.addActionListener(new ActionListener(){
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                quitarDato();
+            }
+        });
+
+        btnEstadistica.addActionListener(new ActionListener(){
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                calcularEstadistica();
+            }
+        });
+
+    }
+
+    private int MAXIMO_DATOS = 1000;
+    private double[] muestra = new double[MAXIMO_DATOS];
+    private int totalDatos = 0;
+
+    private void agregarDato(){
+        if(totalDatos<MAXIMO_DATOS) {
+            muestra[totalDatos] = Double.parseDouble(txtDato.getText());
+            totalDatos++;
+            mostrarDatos();
+
+            System.out.println(totalDatos);
+        }
+        else{
+            JOptionPane.showMessageDialog(null, "No se pueden agregar mas datos");
+        }
+        JOptionPane.showMessageDialog(null, "Hizo clic en AGREGAR");
+    }
+
+    private void mostrarDatos(){
+        String[] strMuestra = new String[totalDatos];
+        for (int i = 0; i < totalDatos; i++) {
+            strMuestra[i] = String.valueOf(muestra[i]);
+        }
+        lstMuestra.setListData(strMuestra);
+    }
+
+    private void quitarDato(){
+        JOptionPane.showMessageDialog(null, "Hizo clic en QUITAR");
+    }
+
+    private void calcularEstadistica(){
+        JOptionPane.showMessageDialog(null, "Hizo clic en CALCULAR ESTADISTICA");
     }
 }
